@@ -336,7 +336,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": true,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "email",
@@ -347,7 +347,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": true,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "login",
@@ -1710,7 +1710,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": false,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "data_hora_utc",
@@ -1820,7 +1820,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": false,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "dados_novos",
@@ -1831,7 +1831,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": false,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "ip_origem",
@@ -1842,7 +1842,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": false,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         },
         {
           "name": "data_hora",
@@ -1942,7 +1942,7 @@
           "generated": false,
           "key": "LGPD",
           "unique": false,
-          "governance": "LGPD"
+          "governance": "LGPD/GDPR"
         }
       ],
       "engine": "InnoDB",
@@ -1988,7 +1988,7 @@
     "tableCount": 19,
     "columnCount": 113,
     "foreignKeyCount": 29,
-    "triggerCount": 15,
+    "triggerCount": 30,
     "procedureCount": 6
   }
 }
