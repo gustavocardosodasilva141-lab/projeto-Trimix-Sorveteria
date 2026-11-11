@@ -1,3 +1,38 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Dicionário de dados da Trimix Sorveteria"><title>Trimix Sorveteria | Dicionário de Dados</title><link rel="stylesheet" href="style.css"><script defer src="script.js"></script></head>
-<body><header><a class="brand" href="#">TRIMIX<span>.</span><small> DATA DICTIONARY</small></a><nav><a href="#catalogo">Catálogo</a><a href="#governanca">Governança</a><a href="#documentacao">Documentação</a><button id="theme">◐ Tema</button></nav></header><main><section class="hero"><p class="eyebrow">DOCUMENTAÇÃO TÉCNICA · BANCO DE DADOS</p><h1>Dados claros.<br><em>Decisões melhores.</em></h1><p>Dicionário de dados interativo do sistema de gestão operacional e vendas da Trimix Sorveteria.</p><div class="stats"><div><b id="tablesCount">19</b><span>Tabelas</span></div><div><b id="columnsCount">113</b><span>Colunas</span></div><div><b>MySQL</b><span>InnoDB</span></div></div></section><section id="catalogo"><div class="section-title"><div><p class="eyebrow">CATÁLOGO E METADADOS</p><h2>Explore a estrutura</h2></div><input id="search" type="search" placeholder="Buscar tabela ou coluna..."></div><div id="catalog" class="catalog"></div></section><section id="governanca"><p class="eyebrow">DADOS RESPONSÁVEIS</p><h2>Governança e proteção</h2><div class="governance"><article><b>LGPD</b><p>CPF, e-mail, IP e dados de auditoria exigem finalidade, acesso restrito, retenção adequada e proteção.</p></article><article><b>RBAC</b><p>Perfis previstos: ATENDENTE, GERENTE e ADMINISTRADOR. As permissões efetivas dependem da configuração do banco e da aplicação.</p></article><article><b>Auditoria</b><p>As tabelas log_acesso e log_auditoria apoiam a rastreabilidade de autenticações e alterações.</p></article></div><p class="literacy"><b>Data Literacy — alfabetização em dados</b><br>Um dicionário padroniza o significado, o formato e as regras das informações, reduzindo ambiguidades entre desenvolvimento, operação e gestão.</p></section><section id="documentacao"><p class="eyebrow">ARTEFATOS DO PROJETO</p><h2>Documentação</h2><p>Os documentos de origem e o DER devem ser adicionados às pastas <code>docs/</code> e <code>assets/</code> após o envio dos arquivos binários revisados.</p><ul><li>Especificação de Requisitos e Regras de Negócio</li><li>Diagrama Entidade-Relacionamento (DER)</li><li>Script SQL de criação (DDL)</li></ul></section></main><footer>TRIMIX SORVETERIA · DICIONÁRIO DE DADOS</footer></body></html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Dicionário de dados e documentação de governança do banco Trimix Sorveteria">
+<title>Trimix Sorveteria | Dicionário de Dados</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/@panzoom/panzoom@4.6.2/dist/panzoom.min.js"></script>
+<script defer src="script.js"></script>
+</head>
+<body>
+<header><a class="brand" href="#">TRIMIX<span>.</span><small> DATA DICTIONARY</small></a>
+<nav><a href="#catalogo">Catálogo</a><a href="#governanca">Governança</a><a href="#documentacao">Documentação</a><button id="theme" type="button">◐ Tema</button></nav></header>
+<main>
+<section class="hero"><p class="eyebrow">DOCUMENTAÇÃO TÉCNICA · BANCO DE DADOS</p><h1>Dados claros.<br><em>Decisões melhores.</em></h1>
+<p>Dicionário de dados do Sistema de Gestão Operacional e Vendas da Trimix Sorveteria. Catálogo estruturado a partir do DDL disponibilizado pelo grupo.</p>
+<div class="stats"><div><b id="tablesCount">19</b><span>Tabelas</span></div><div><b id="columnsCount">113</b><span>Colunas</span></div><div><b id="foreignCount">29</b><span>Chaves estrangeiras</span></div><div><b>MySQL 8</b><span>InnoDB</span></div></div>
+<div class="hero-actions"><a class="primary" href="#catalogo">Explorar dicionário</a><button id="openDer" type="button">Visualizar DER</button></div></section>
+<section id="catalogo"><div class="section-title"><div><p class="eyebrow">CATÁLOGO E METADADOS</p><h2>Explore a estrutura</h2></div><input id="search" type="search" placeholder="Buscar tabela, coluna ou tipo..." aria-label="Buscar tabela ou coluna"></div>
+<div class="filters"><span id="resultCount">Carregando tabelas...</span><button id="clearSearch" type="button">Limpar busca</button></div><div id="catalog" class="catalog" aria-live="polite"></div></section>
+<section id="governanca"><p class="eyebrow">DADOS RESPONSÁVEIS</p><h2>Governança e proteção</h2>
+<div class="governance"><article><b>LGPD</b><p>Dados pessoais identificáveis e registros de acesso/auditoria exigem finalidade, minimização, acesso restrito, retenção e medidas de segurança. As marcações no catálogo são classificações para revisão, não certificação de conformidade.</p></article>
+<article><b>RBAC</b><p>O documento de requisitos define os perfis ATENDENTE, GERENTE e ADMINISTRADOR. A efetivação das permissões requer usuários, roles e grants configurados no SGBD e na aplicação.</p></article>
+<article><b>Auditoria</b><p>O DDL contém as tabelas log_acesso e log_auditoria, além de triggers para registrar eventos. Verifique a política de acesso e retenção dos registros.</p></article></div>
+<p class="literacy"><b>Data Literacy — alfabetização em dados</b><br>Um dicionário de dados padroniza o significado, o formato, a origem e as regras das informações. Isso permite que equipe técnica e área de negócio interpretem os dados com o mesmo entendimento, reduzindo ambiguidades e erros.</p>
+</section>
+<section id="documentacao"><p class="eyebrow">ARTEFATOS DO PROJETO</p><h2>Documentação do grupo</h2>
+<div class="documents">
+<article><b>Especificação de Requisitos</b><p>PDF revisado, com histórico de revisões atualizado.</p><a href="docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a><small id="pdfStatus">Arquivo esperado: docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf</small></article>
+<article><b>Diagrama Entidade-Relacionamento</b><p>DER exportado em PNG/JPG, conforme a entrega.</p><button id="openDer2" type="button">Abrir visualizador</button><small>Arquivo esperado: assets/der.png</small></article>
+<article><b>Script SQL (DDL)</b><p>Fonte de metadados utilizada para construir o catálogo.</p><a href="docs/ddl_original.sql" target="_blank" rel="noopener">Consultar DDL ↗</a></article>
+</div>
+<p class="notice">Os links do PDF e do DER só funcionarão depois que os arquivos binários revisados forem adicionados às pastas indicadas.</p>
+</section>
+</main>
+<div class="modal" id="derModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="derTitle"><div class="modal-panel"><div class="modal-head"><div><p class="eyebrow">MODELO DE DADOS</p><h2 id="derTitle">Diagrama Entidade-Relacionamento</h2></div><button id="closeDer" aria-label="Fechar visualizador">✕</button></div><div class="zoom-tools"><button id="zoomIn" type="button">＋ Zoom</button><button id="zoomOut" type="button">− Zoom</button><button id="resetZoom" type="button">Redefinir</button></div><div class="der-viewport" id="derViewport"><img id="derImage" src="assets/der.png" alt="Diagrama Entidade-Relacionamento da Trimix Sorveteria"><p id="derStatus">Carregando o DER...</p></div></div></div>
+<footer>TRIMIX SORVETERIA · DICIONÁRIO DE DADOS · DOCUMENTAÇÃO ACADÊMICA</footer>
+</body></html>
