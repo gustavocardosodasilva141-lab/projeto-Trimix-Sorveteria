@@ -1,25 +1,46 @@
 # Trimix Sorveteria — Dicionário de Dados
 
-Documentação web do banco de dados do Sistema de Gestão Operacional e Vendas da Trimix Sorveteria.
+Documentação interativa do banco de dados do Sistema de Gestão Operacional e Vendas da Trimix Sorveteria.
 
-## Estrutura publicada
-- `index.html`: página principal.
-- `style.css`: estilos responsivos e tema claro/escuro.
-- `script.js`: busca dinâmica e renderização do catálogo.
-- `data.json`: metadados das 19 tabelas e 113 colunas extraídos do DDL.
-- `docs/revisao_tecnica.md`: pontos de coerência que precisam de validação pelo grupo.
+## Estrutura
+
+```text
+.
+├── index.html
+├── style.css
+├── script.js
+├── data.json
+├── docs/
+│   ├── README.md
+│   ├── ddl_original.sql
+│   ├── revisao_tecnica.md
+│   └── Especificacao_Requisitos_Regras_Negocio_BD.pdf  (pendente)
+└── assets/
+    ├── README.md
+    └── der.png  (pendente; PNG ou JPG)
+```
+
+## Catálogo
+
+O catálogo foi conferido contra o DDL fornecido: 19 tabelas e 113 colunas, sem divergência nominal. O JSON inclui tipos, nulabilidade, valores default, PK/FK, índices e metadados de relacionamento.
+
+## Recursos
+
+- Pesquisa em tempo real por tabela, coluna e tipo.
+- Alternância de tema claro/escuro.
+- Detalhes de chaves estrangeiras, índices únicos e nulabilidade.
+- Modal do DER com Panzoom.js (zoom e pan), dependente de `assets/der.png` ou `assets/der.jpg`.
+- Seções de Data Literacy, LGPD, RBAC e auditoria.
 
 ## Publicar no GitHub Pages
+
 1. Abra **Settings → Pages**.
-2. Em **Build and deployment**, escolha **Deploy from a branch**.
-3. Selecione **main** e **/(root)** e salve.
-4. Aguarde o GitHub concluir a publicação.
+2. Em **Build and deployment**, selecione **Deploy from a branch**.
+3. Escolha a branch **main** e a pasta **/(root)**.
+4. Clique em **Save** e aguarde o deploy.
 
 URL esperada: https://gustavocardosodasilva141-lab.github.io/projeto-Trimix-Sorveteria/
 
-## Pendências documentais
-Os arquivos binários originais/revisados (PDF da especificação e imagem DER) ainda precisam ser enviados para:
-- `docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf`
-- `assets/der.png`
+## Pendências da entrega acadêmica
 
-O DDL original também deve ser anexado em `docs/ddl_original.sql` para manter a trilha de auditoria da documentação. Não considere a entrega completa até validar e incluir esses artefatos e conferir o DER atualizado.
+Antes de entregar, o grupo precisa corrigir as divergências registradas em `docs/revisao_tecnica.md`, exportar o PDF de requisitos atualizado e o DER final em PNG/JPG, e adicionar os arquivos binários nos caminhos exatos acima. A ativação do GitHub Pages também precisa ser confirmada.
