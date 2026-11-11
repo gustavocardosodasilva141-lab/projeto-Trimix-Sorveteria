@@ -7,7 +7,7 @@ Data da conferência: 11/11/2026. Fonte de comparação: instruções da ativida
 - 19 tabelas no DDL.
 - 113 colunas no DDL e no catálogo publicado; comparação de nomes por tabela sem divergências.
 - 29 declarações de chave estrangeira.
-- 15 triggers e 6 procedures no script SQL.
+- 30 triggers e 6 procedures no script SQL.
 - O documento de requisitos v1.1 possui quatro entradas no histórico de revisões (0.1, 0.2, 1.0 e 1.1).
 
 ## Divergências entre Requisitos e DDL
