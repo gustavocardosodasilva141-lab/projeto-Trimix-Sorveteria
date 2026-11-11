@@ -1,1 +1,1994 @@
-{"project":"Trimix Sorveteria","database":"trimix_sorveteria","engine":"MySQL / InnoDB","tables":[{"name":"cidade","columns":[{"name":"id_cidade","type":"INT(11)","key":"PK"},{"name":"nome_cidade","type":"VARCHAR(100)","key":""},{"name":"uf","type":"CHAR(2)","key":""}]},{"name":"endereco","columns":[{"name":"id_endereco","type":"INT(11)","key":"PK"},{"name":"id_cidade","type":"INT(11)","key":"FK"},{"name":"cep","type":"CHAR(8)","key":""},{"name":"logradouro","type":"VARCHAR(150)","key":""},{"name":"bairro","type":"VARCHAR(100)","key":""}]},{"name":"loja","columns":[{"name":"id_loja","type":"INT(11)","key":"PK"},{"name":"nome_loja","type":"VARCHAR(100)","key":""},{"name":"cnpj","type":"VARCHAR(14)","key":""},{"name":"id_endereco","type":"INT(11)","key":"FK"},{"name":"numero_endereco","type":"VARCHAR(10)","key":""},{"name":"complemento","type":"VARCHAR(100)","key":""},{"name":"telefone","type":"VARCHAR(15)","key":""},{"name":"id_funcionario_responsavel","type":"INT(11)","key":"FK"},{"name":"ativo","type":"TINYINT(1)","key":""}]},{"name":"funcionario","columns":[{"name":"id_funcionario","type":"INT(11)","key":"PK"},{"name":"id_loja","type":"INT(11)","key":"FK"},{"name":"nome_funcionario","type":"VARCHAR(100)","key":""},{"name":"cpf","type":"VARCHAR(11)","key":"LGPD"},{"name":"email","type":"VARCHAR(100)","key":"LGPD"},{"name":"login","type":"VARCHAR(50)","key":"RBAC"},{"name":"senha_hash","type":"VARCHAR(255)","key":"RBAC"},{"name":"perfil","type":"ENUM('ATENDENTE','GERENTE','ADMINISTRADOR')","key":"RBAC"},{"name":"data_admissao","type":"DATE","key":""},{"name":"ativo","type":"TINYINT(1)","key":"RBAC"},{"name":"data_consentimento_lgpd","type":"DATETIME","key":""}]},{"name":"categoria","columns":[{"name":"id_categoria","type":"INT(11)","key":"PK"},{"name":"nome_categoria","type":"VARCHAR(100)","key":""},{"name":"descricao","type":"VARCHAR(255)","key":""},{"name":"ativo","type":"TINYINT(1)","key":""}]},{"name":"produto","columns":[{"name":"id_produto","type":"INT(11)","key":"PK"},{"name":"id_categoria","type":"INT(11)","key":"FK"},{"name":"nome_produto","type":"VARCHAR(100)","key":""},{"name":"ativo","type":"TINYINT(1)","key":""}]},{"name":"produto_loja","columns":[{"name":"id_produto_loja","type":"INT(11)","key":"PK"},{"name":"id_produto","type":"INT(11)","key":"FK"},{"name":"id_loja","type":"INT(11)","key":"FK"},{"name":"preco_tabela","type":"DECIMAL(10,2)","key":""},{"name":"estoque_atual_caixas","type":"INT(11)","key":""},{"name":"disponivel","type":"TINYINT(1)","key":""}]},{"name":"baixa_estoque","columns":[{"name":"id_baixa_estoque","type":"INT(11)","key":"PK"},{"name":"id_produto_loja","type":"INT(11)","key":"FK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"quantidade_caixas","type":"INT(11)","key":""},{"name":"data_baixa","type":"DATETIME","key":""}]},{"name":"caixa","columns":[{"name":"id_caixa","type":"INT(11)","key":"PK"},{"name":"id_loja","type":"INT(11)","key":"FK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"situacao","type":"ENUM('ABERTO','FECHADO')","key":""},{"name":"data_abertura","type":"DATETIME","key":""},{"name":"valor_abertura","type":"DECIMAL(10,2)","key":""},{"name":"data_fechamento","type":"DATETIME","key":""},{"name":"valor_fechamento","type":"DECIMAL(10,2)","key":""},{"name":"valor_esperado","type":"DECIMAL(10,2)","key":""},{"name":"quebra_caixa","type":"DECIMAL(10,2)","key":""},{"name":"id_loja_aberta","type":"INT(11)","key":""}]},{"name":"estorno_baixa","columns":[{"name":"id_estorno_baixa","type":"INT(11)","key":"PK"},{"name":"id_baixa_estoque","type":"INT(11)","key":"FK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"quantidade_caixas","type":"INT(11)","key":""},{"name":"motivo","type":"VARCHAR(255)","key":""},{"name":"data_estorno","type":"DATETIME","key":""}]},{"name":"venda","columns":[{"name":"id_venda","type":"INT(11)","key":"PK"},{"name":"id_loja","type":"INT(11)","key":"FK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"id_caixa","type":"INT(11)","key":"FK"},{"name":"data_hora","type":"DATETIME","key":""}]},{"name":"estorno_venda","columns":[{"name":"id_estorno_venda","type":"INT(11)","key":"PK"},{"name":"id_venda","type":"INT(11)","key":"FK"},{"name":"id_funcionario_autorizador","type":"INT(11)","key":"FK"},{"name":"motivo","type":"VARCHAR(255)","key":""},{"name":"data_hora","type":"DATETIME","key":""}]},{"name":"forma_pagamento","columns":[{"name":"id_forma_pagamento","type":"INT(11)","key":"PK"},{"name":"descricao","type":"VARCHAR(50)","key":""},{"name":"exige_autorizacao","type":"TINYINT(1)","key":""},{"name":"ativo","type":"TINYINT(1)","key":""}]},{"name":"transferencia_estoque","columns":[{"name":"id_transferencia_estoque","type":"INT(11)","key":"PK"},{"name":"id_loja_origem","type":"INT(11)","key":"FK"},{"name":"id_loja_destino","type":"INT(11)","key":"FK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"data_transferencia","type":"DATETIME","key":""}]},{"name":"item_transferencia","columns":[{"name":"id_item_transferencia","type":"INT(11)","key":"PK"},{"name":"id_transferencia_estoque","type":"INT(11)","key":"FK"},{"name":"id_produto","type":"INT(11)","key":"FK"},{"name":"quantidade_caixas","type":"INT(11)","key":""}]},{"name":"item_venda","columns":[{"name":"id_item_venda","type":"INT(11)","key":"PK"},{"name":"id_venda","type":"INT(11)","key":"FK"},{"name":"id_produto_loja","type":"INT(11)","key":"FK"},{"name":"quantidade","type":"INT(11)","key":""},{"name":"preco_praticado","type":"DECIMAL(10,2)","key":""},{"name":"desconto_unitario","type":"DECIMAL(10,2)","key":""}]},{"name":"log_acesso","columns":[{"name":"id_log_acesso","type":"BIGINT(20)","key":"PK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"login_informado","type":"VARCHAR(50)","key":""},{"name":"sucesso","type":"TINYINT(1)","key":""},{"name":"ip_origem","type":"VARCHAR(45)","key":"LGPD"},{"name":"data_hora_utc","type":"DATETIME","key":""}]},{"name":"log_auditoria","columns":[{"name":"id_log_auditoria","type":"BIGINT(20)","key":"PK"},{"name":"id_funcionario","type":"INT(11)","key":"FK"},{"name":"tabela_afetada","type":"VARCHAR(64)","key":""},{"name":"operacao","type":"VARCHAR(30)","key":""},{"name":"id_registro_afetado","type":"INT(11)","key":""},{"name":"dados_anteriores","type":"LONGTEXT","key":"LGPD"},{"name":"dados_novos","type":"LONGTEXT","key":"LGPD"},{"name":"ip_origem","type":"VARCHAR(45)","key":"LGPD"},{"name":"data_hora","type":"DATETIME","key":""}]},{"name":"venda_pagamento","columns":[{"name":"id_venda_pagamento","type":"INT(11)","key":"PK"},{"name":"id_venda","type":"INT(11)","key":"FK"},{"name":"id_forma_pagamento","type":"INT(11)","key":"FK"},{"name":"valor_pago","type":"DECIMAL(10,2)","key":""},{"name":"codigo_autorizacao","type":"VARCHAR(50)","key":"LGPD"}]}]}
+{
+  "project": "Trimix Sorveteria",
+  "database": "trimix_sorveteria",
+  "engine": "MySQL / InnoDB",
+  "tables": [
+    {
+      "name": "cidade",
+      "columns": [
+        {
+          "name": "id_cidade",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "nome_cidade",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "uf",
+          "type": "CHAR(2)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [],
+      "uniqueIndexes": [
+        {
+          "name": "uk_cidade_nome_uf",
+          "columns": [
+            "nome_cidade",
+            "uf"
+          ]
+        }
+      ],
+      "indexes": [],
+      "checks": []
+    },
+    {
+      "name": "endereco",
+      "columns": [
+        {
+          "name": "id_endereco",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_cidade",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "cep",
+          "type": "CHAR(8)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "logradouro",
+          "type": "VARCHAR(150)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "bairro",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_endereco_cidade",
+          "column": "id_cidade",
+          "referencesTable": "cidade",
+          "referencesColumn": "id_cidade",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_endereco_cep",
+          "columns": [
+            "cep"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_endereco_cidade",
+          "columns": [
+            "id_cidade"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "loja",
+      "columns": [
+        {
+          "name": "id_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "nome_loja",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "cnpj",
+          "type": "VARCHAR(14)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "id_endereco",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "numero_endereco",
+          "type": "VARCHAR(10)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "complemento",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "telefone",
+          "type": "VARCHAR(15)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario_responsavel",
+          "type": "INT(11)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ativo",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_loja_endereco",
+          "column": "id_endereco",
+          "referencesTable": "endereco",
+          "referencesColumn": "id_endereco",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_loja_responsavel",
+          "column": "id_funcionario_responsavel",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_loja_cnpj",
+          "columns": [
+            "cnpj"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_loja_endereco",
+          "columns": [
+            "id_endereco"
+          ]
+        },
+        {
+          "name": "fk_loja_responsavel",
+          "columns": [
+            "id_funcionario_responsavel"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "funcionario",
+      "columns": [
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "nome_funcionario",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "cpf",
+          "type": "VARCHAR(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": true,
+          "governance": "LGPD"
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": true,
+          "governance": "LGPD"
+        },
+        {
+          "name": "login",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "RBAC",
+          "unique": true,
+          "governance": "RBAC"
+        },
+        {
+          "name": "senha_hash",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "RBAC",
+          "unique": false,
+          "governance": "RBAC"
+        },
+        {
+          "name": "perfil",
+          "type": "ENUM('ATENDENTE', 'GERENTE', 'ADMINISTRADOR')",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "RBAC",
+          "unique": false,
+          "governance": "RBAC"
+        },
+        {
+          "name": "data_admissao",
+          "type": "DATE",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ativo",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "RBAC",
+          "unique": false,
+          "governance": "RBAC"
+        },
+        {
+          "name": "data_consentimento_lgpd",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_func_loja",
+          "column": "id_loja",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_func_cpf",
+          "columns": [
+            "cpf"
+          ]
+        },
+        {
+          "name": "uk_func_email",
+          "columns": [
+            "email"
+          ]
+        },
+        {
+          "name": "uk_func_login",
+          "columns": [
+            "login"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_func_loja",
+          "columns": [
+            "id_loja"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "categoria",
+      "columns": [
+        {
+          "name": "id_categoria",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "nome_categoria",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "descricao",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ativo",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [],
+      "uniqueIndexes": [
+        {
+          "name": "uk_categoria_nome",
+          "columns": [
+            "nome_categoria"
+          ]
+        }
+      ],
+      "indexes": [],
+      "checks": []
+    },
+    {
+      "name": "produto",
+      "columns": [
+        {
+          "name": "id_produto",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_categoria",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "nome_produto",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ativo",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_produto_categoria",
+          "column": "id_categoria",
+          "referencesTable": "categoria",
+          "referencesColumn": "id_categoria",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_produto_categoria",
+          "columns": [
+            "id_categoria"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "produto_loja",
+      "columns": [
+        {
+          "name": "id_produto_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_produto",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "id_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "preco_tabela",
+          "type": "DECIMAL(10,2)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "estoque_atual_caixas",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": "0",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "disponivel",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_pl_loja",
+          "column": "id_loja",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_pl_produto",
+          "column": "id_produto",
+          "referencesTable": "produto",
+          "referencesColumn": "id_produto",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_produto_loja",
+          "columns": [
+            "id_produto",
+            "id_loja"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_pl_loja",
+          "columns": [
+            "id_loja"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "baixa_estoque",
+      "columns": [
+        {
+          "name": "id_baixa_estoque",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_produto_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "quantidade_caixas",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_baixa",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_baixa_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_baixa_pl",
+          "column": "id_produto_loja",
+          "referencesTable": "produto_loja",
+          "referencesColumn": "id_produto_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_baixa_pl",
+          "columns": [
+            "id_produto_loja"
+          ]
+        },
+        {
+          "name": "fk_baixa_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "caixa",
+      "columns": [
+        {
+          "name": "id_caixa",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "situacao",
+          "type": "ENUM('ABERTO', 'FECHADO')",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_abertura",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "valor_abertura",
+          "type": "DECIMAL(10,2)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_fechamento",
+          "type": "DATETIME",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "valor_fechamento",
+          "type": "DECIMAL(10,2)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "valor_esperado",
+          "type": "DECIMAL(10,2)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "quebra_caixa",
+          "type": "DECIMAL(10,2)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja_aberta",
+          "type": "INT(11)",
+          "nullable": true,
+          "default": null,
+          "autoIncrement": false,
+          "generated": true,
+          "key": "",
+          "unique": true,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_caixa_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_caixa_loja",
+          "column": "id_loja",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_caixa_loja_aberta",
+          "columns": [
+            "id_loja_aberta"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_caixa_loja",
+          "columns": [
+            "id_loja"
+          ]
+        },
+        {
+          "name": "fk_caixa_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "estorno_baixa",
+      "columns": [
+        {
+          "name": "id_estorno_baixa",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_baixa_estoque",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "quantidade_caixas",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "motivo",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_estorno",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_estbaixa_baixa",
+          "column": "id_baixa_estoque",
+          "referencesTable": "baixa_estoque",
+          "referencesColumn": "id_baixa_estoque",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_estbaixa_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_estbaixa_baixa",
+          "columns": [
+            "id_baixa_estoque"
+          ]
+        },
+        {
+          "name": "fk_estbaixa_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "venda",
+      "columns": [
+        {
+          "name": "id_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_caixa",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_hora",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_venda_caixa",
+          "column": "id_caixa",
+          "referencesTable": "caixa",
+          "referencesColumn": "id_caixa",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_venda_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_venda_loja",
+          "column": "id_loja",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_venda_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        },
+        {
+          "name": "fk_venda_caixa",
+          "columns": [
+            "id_caixa"
+          ]
+        },
+        {
+          "name": "idx_venda_data_hora",
+          "columns": [
+            "data_hora"
+          ]
+        },
+        {
+          "name": "idx_venda_loja_data",
+          "columns": [
+            "id_loja",
+            "data_hora"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "estorno_venda",
+      "columns": [
+        {
+          "name": "id_estorno_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario_autorizador",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "motivo",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_hora",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_ev_func",
+          "column": "id_funcionario_autorizador",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_ev_venda",
+          "column": "id_venda",
+          "referencesTable": "venda",
+          "referencesColumn": "id_venda",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_estorno_venda",
+          "columns": [
+            "id_venda"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_ev_func",
+          "columns": [
+            "id_funcionario_autorizador"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "forma_pagamento",
+      "columns": [
+        {
+          "name": "id_forma_pagamento",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "descricao",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "exige_autorizacao",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "0",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ativo",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": "1",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [],
+      "uniqueIndexes": [
+        {
+          "name": "uk_forma_pag_desc",
+          "columns": [
+            "descricao"
+          ]
+        }
+      ],
+      "indexes": [],
+      "checks": []
+    },
+    {
+      "name": "transferencia_estoque",
+      "columns": [
+        {
+          "name": "id_transferencia_estoque",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja_origem",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_loja_destino",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "data_transferencia",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_transf_destino",
+          "column": "id_loja_destino",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_transf_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_transf_origem",
+          "column": "id_loja_origem",
+          "referencesTable": "loja",
+          "referencesColumn": "id_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_transf_origem",
+          "columns": [
+            "id_loja_origem"
+          ]
+        },
+        {
+          "name": "fk_transf_destino",
+          "columns": [
+            "id_loja_destino"
+          ]
+        },
+        {
+          "name": "fk_transf_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "item_transferencia",
+      "columns": [
+        {
+          "name": "id_item_transferencia",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_transferencia_estoque",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "id_produto",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "quantidade_caixas",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_it_produto",
+          "column": "id_produto",
+          "referencesTable": "produto",
+          "referencesColumn": "id_produto",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_it_transf",
+          "column": "id_transferencia_estoque",
+          "referencesTable": "transferencia_estoque",
+          "referencesColumn": "id_transferencia_estoque",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_item_transf",
+          "columns": [
+            "id_transferencia_estoque",
+            "id_produto"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_it_produto",
+          "columns": [
+            "id_produto"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "item_venda",
+      "columns": [
+        {
+          "name": "id_item_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "id_produto_loja",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": true,
+          "governance": null
+        },
+        {
+          "name": "quantidade",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "preco_praticado",
+          "type": "DECIMAL(10,2)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "desconto_unitario",
+          "type": "DECIMAL(10,2)",
+          "nullable": false,
+          "default": "0.00",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_iv_pl",
+          "column": "id_produto_loja",
+          "referencesTable": "produto_loja",
+          "referencesColumn": "id_produto_loja",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_iv_venda",
+          "column": "id_venda",
+          "referencesTable": "venda",
+          "referencesColumn": "id_venda",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [
+        {
+          "name": "uk_item_venda",
+          "columns": [
+            "id_venda",
+            "id_produto_loja"
+          ]
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_iv_pl",
+          "columns": [
+            "id_produto_loja"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "log_acesso",
+      "columns": [
+        {
+          "name": "id_log_acesso",
+          "type": "BIGINT(20)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "login_informado",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "sucesso",
+          "type": "TINYINT(1)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "ip_origem",
+          "type": "VARCHAR(45)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": false,
+          "governance": "LGPD"
+        },
+        {
+          "name": "data_hora_utc",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_logacesso_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_logacesso_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        },
+        {
+          "name": "idx_log_acesso_data",
+          "columns": [
+            "data_hora_utc"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "log_auditoria",
+      "columns": [
+        {
+          "name": "id_log_auditoria",
+          "type": "BIGINT(20)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_funcionario",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "tabela_afetada",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "operacao",
+          "type": "VARCHAR(30)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_registro_afetado",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "dados_anteriores",
+          "type": "LONGTEXT",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": false,
+          "governance": "LGPD"
+        },
+        {
+          "name": "dados_novos",
+          "type": "LONGTEXT",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": false,
+          "governance": "LGPD"
+        },
+        {
+          "name": "ip_origem",
+          "type": "VARCHAR(45)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": false,
+          "governance": "LGPD"
+        },
+        {
+          "name": "data_hora",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP()",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_log_func",
+          "column": "id_funcionario",
+          "referencesTable": "funcionario",
+          "referencesColumn": "id_funcionario",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_log_func",
+          "columns": [
+            "id_funcionario"
+          ]
+        },
+        {
+          "name": "idx_log_aud_tabela",
+          "columns": [
+            "tabela_afetada",
+            "id_registro_afetado"
+          ]
+        }
+      ],
+      "checks": []
+    },
+    {
+      "name": "venda_pagamento",
+      "columns": [
+        {
+          "name": "id_venda_pagamento",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": true,
+          "generated": false,
+          "key": "PK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_venda",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "id_forma_pagamento",
+          "type": "INT(11)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "FK",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "valor_pago",
+          "type": "DECIMAL(10,2)",
+          "nullable": false,
+          "default": null,
+          "autoIncrement": false,
+          "generated": false,
+          "key": "",
+          "unique": false,
+          "governance": null
+        },
+        {
+          "name": "codigo_autorizacao",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "default": "NULL",
+          "autoIncrement": false,
+          "generated": false,
+          "key": "LGPD",
+          "unique": false,
+          "governance": "LGPD"
+        }
+      ],
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "foreignKeys": [
+        {
+          "name": "fk_vp_forma",
+          "column": "id_forma_pagamento",
+          "referencesTable": "forma_pagamento",
+          "referencesColumn": "id_forma_pagamento",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        },
+        {
+          "name": "fk_vp_venda",
+          "column": "id_venda",
+          "referencesTable": "venda",
+          "referencesColumn": "id_venda",
+          "onDelete": "RESTRICT (padrão do InnoDB)",
+          "onUpdate": "CASCADE"
+        }
+      ],
+      "uniqueIndexes": [],
+      "indexes": [
+        {
+          "name": "fk_vp_venda",
+          "columns": [
+            "id_venda"
+          ]
+        },
+        {
+          "name": "fk_vp_forma",
+          "columns": [
+            "id_forma_pagamento"
+          ]
+        }
+      ],
+      "checks": []
+    }
+  ],
+  "audit": {
+    "source": "trimix_script_workbench(1).sql",
+    "tableCount": 19,
+    "columnCount": 113,
+    "foreignKeyCount": 29,
+    "triggerCount": 15,
+    "procedureCount": 6
+  }
+}
