@@ -997,3 +997,219 @@ TRIGGER `trimix_sorveteria`.`trg_venda_bu`
 BEFORE UPDATE ON `trimix_sorveteria`.`venda`
 FOR EACH ROW
 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN10: venda e imutavel. Use estorno (RN11).'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_estorno_venda_ai` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_estorno_venda_ai`
+AFTER INSERT ON `trimix_sorveteria`.`estorno_venda`
+FOR EACH ROW
+INSERT INTO log_auditoria (id_funcionario, tabela_afetada, operacao, id_registro_afetado, dados_novos)
+  VALUES (NEW.id_funcionario_autorizador, 'estorno_venda', 'INSERCAO', NEW.id_estorno_venda,
+          JSON_OBJECT('id_venda', NEW.id_venda))$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_estorno_venda_bd` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_estorno_venda_bd`
+BEFORE DELETE ON `trimix_sorveteria`.`estorno_venda`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'PR01: estorno nao pode ser excluido.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_estorno_venda_bi` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_estorno_venda_bi`
+BEFORE INSERT ON `trimix_sorveteria`.`estorno_venda`
+FOR EACH ROW
+BEGIN
+  DECLARE v_perfil VARCHAR(20) DEFAULT NULL;
+  DECLARE v_ativo TINYINT DEFAULT NULL;
+  SELECT perfil, ativo INTO v_perfil, v_ativo
+    FROM funcionario WHERE id_funcionario = NEW.id_funcionario_autorizador;
+  IF v_ativo IS NULL OR v_ativo = 0 OR v_perfil NOT IN ('GERENTE','ADMINISTRADOR') THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN11: autorizador deve ser GERENTE ou ADMINISTRADOR ativo.';
+  END IF;
+  IF NEW.motivo IS NULL OR TRIM(NEW.motivo) = '' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN11: motivo do estorno e obrigatorio.';
+  END IF;
+END$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_estorno_venda_bu` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_estorno_venda_bu`
+BEFORE UPDATE ON `trimix_sorveteria`.`estorno_venda`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'PR01: estorno nao pode ser alterado.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_transf_ai` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_transf_ai`
+AFTER INSERT ON `trimix_sorveteria`.`transferencia_estoque`
+FOR EACH ROW
+INSERT INTO log_auditoria (id_funcionario, tabela_afetada, operacao, id_registro_afetado, dados_novos)
+  VALUES (NEW.id_funcionario, 'transferencia_estoque', 'INSERCAO', NEW.id_transferencia_estoque,
+          JSON_OBJECT('origem', NEW.id_loja_origem, 'destino', NEW.id_loja_destino))$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_transf_bi` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_transf_bi`
+BEFORE INSERT ON `trimix_sorveteria`.`transferencia_estoque`
+FOR EACH ROW
+BEGIN
+  CALL sp_exige_funcionario_ativo(NEW.id_funcionario);
+  IF NEW.id_loja_origem = NEW.id_loja_destino THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN04: loja de origem e destino devem ser diferentes.';
+  END IF;
+END$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_transf_bu` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_transf_bu`
+BEFORE UPDATE ON `trimix_sorveteria`.`transferencia_estoque`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transferencia concluida nao pode ser alterada.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_item_venda_bd` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_item_venda_bd`
+BEFORE DELETE ON `trimix_sorveteria`.`item_venda`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN10/PR01: item de venda nao pode ser excluido.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_item_venda_bi` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_item_venda_bi`
+BEFORE INSERT ON `trimix_sorveteria`.`item_venda`
+FOR EACH ROW
+BEGIN
+  DECLARE v_loja_venda INT DEFAULT NULL;
+  DECLARE v_loja_pl INT DEFAULT NULL;
+  DECLARE v_disp TINYINT DEFAULT NULL;
+  SELECT id_loja INTO v_loja_venda FROM venda WHERE id_venda = NEW.id_venda;
+  SELECT id_loja, disponivel INTO v_loja_pl, v_disp
+    FROM produto_loja WHERE id_produto_loja = NEW.id_produto_loja;
+  IF v_loja_venda IS NULL OR v_loja_pl IS NULL OR v_loja_venda <> v_loja_pl THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN02: produto fora do catalogo da loja da venda.';
+  END IF;
+  IF v_disp = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN02: produto indisponivel nesta loja.';
+  END IF;
+END$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_item_venda_bu` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_item_venda_bu`
+BEFORE UPDATE ON `trimix_sorveteria`.`item_venda`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN10: item de venda e imutavel.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_log_aud_bd` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_log_aud_bd`
+BEFORE DELETE ON `trimix_sorveteria`.`log_auditoria`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RNF01: log_auditoria e somente de insercao.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_log_aud_bu` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_log_aud_bu`
+BEFORE UPDATE ON `trimix_sorveteria`.`log_auditoria`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RNF01: log_auditoria e somente de insercao.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_venda_pag_bd` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_venda_pag_bd`
+BEFORE DELETE ON `trimix_sorveteria`.`venda_pagamento`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN10/PR01: pagamento nao pode ser excluido.'$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_venda_pag_bi` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_venda_pag_bi`
+BEFORE INSERT ON `trimix_sorveteria`.`venda_pagamento`
+FOR EACH ROW
+BEGIN
+  DECLARE v_exige TINYINT DEFAULT NULL;
+  DECLARE v_ativo TINYINT DEFAULT NULL;
+  SELECT exige_autorizacao, ativo INTO v_exige, v_ativo
+    FROM forma_pagamento WHERE id_forma_pagamento = NEW.id_forma_pagamento;
+  IF v_ativo IS NULL OR v_ativo = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN08: forma de pagamento inexistente ou inativa.';
+  END IF;
+  IF v_exige = 1 AND (NEW.codigo_autorizacao IS NULL OR TRIM(NEW.codigo_autorizacao) = '') THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN08: codigo de autorizacao/NSU obrigatorio para esta forma.';
+  END IF;
+END$$
+
+
+USE `trimix_sorveteria`$$
+DROP TRIGGER IF EXISTS `trimix_sorveteria`.`trg_venda_pag_bu` $$
+USE `trimix_sorveteria`$$
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `trimix_sorveteria`.`trg_venda_pag_bu`
+BEFORE UPDATE ON `trimix_sorveteria`.`venda_pagamento`
+FOR EACH ROW
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'RN10: pagamento e imutavel.'$$
+
+
+DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
